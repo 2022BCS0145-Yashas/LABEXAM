@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 import joblib
 
-df = pd.read_csv("dataset/winequality.csv")
+df = pd.read_csv("dataset/winequality.csv", sep=";")
 
 X = df.drop("quality", axis=1)
 y = df["quality"]
