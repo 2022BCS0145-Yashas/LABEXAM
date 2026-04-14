@@ -7,12 +7,6 @@ pipeline {
 
     stages {
 
-        stage('Clone Repo') {
-            steps {
-                git 'https://github.com/2022BCS0145-Yashas/LABEXAM'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 sh 'pip install -r requirements.txt'
