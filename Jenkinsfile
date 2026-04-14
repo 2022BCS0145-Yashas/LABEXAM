@@ -3,12 +3,17 @@ pipeline {
 
     stages {
 
-        stage('Run Training in Docker') {
+        stage('Install Dependencies') {
             steps {
-                sh '''
-                docker build -t temp-ml .
-                docker run temp-ml python train.py
-                '''
+                sh 'python3 -m venv env'
+                sh 'source env/bin/activate'
+                sh 'pip install -r requirements.txt'
+            }
+        }
+
+        stage('Train Model') {
+            steps {
+                sh 'python scripts/train.py'
             }
         }
 
