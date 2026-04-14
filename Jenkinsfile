@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        IMAGE_NAME = "yashas080504/wine-quality-api"
-    }
-
     stages {
 
         stage('Install Dependencies') {
@@ -15,13 +11,7 @@ pipeline {
 
         stage('Train Model') {
             steps {
-                sh 'python train.py'
-            }
-        }
-
-        stage('Evaluate Model') {
-            steps {
-                sh 'python evaluate.py'
+                sh 'python scripts/train.py'
             }
         }
 
@@ -34,23 +24,23 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                sh 'docker build -t yashas080504/wine-api .'
             }
         }
 
-    stage('Push to DockerHub') {
-        steps {
-            withCredentials([usernamePassword(
-                credentialsId: 'dockerhub-creds',
-                usernameVariable: 'DOCKER_USER',
-                passwordVariable: 'DOCKER_PASS'
-            )]) {
-                sh '''
-                echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                docker push yashas080504/wine-api
-                '''
+        stage('Push to DockerHub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                    docker push yashas080504/wine-api
+                    '''
+                }
             }
         }
-    }
     }
 }
