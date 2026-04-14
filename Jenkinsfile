@@ -5,16 +5,13 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'apt install python3.13-venv'
-                sh 'python3 -m venv env'
-                sh 'source env/bin/activate'
-                sh 'pip install -r requirements.txt'
+                sh 'pip3 install -r requirements.txt'
             }
         }
 
         stage('Train Model') {
             steps {
-                sh 'python scripts/train.py'
+                sh 'python3 scripts/train.py'
             }
         }
 
