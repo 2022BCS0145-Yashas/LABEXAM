@@ -53,7 +53,7 @@ pipeline {
             )]) {
                 sh '''
                 echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                docker push yourdockerhubusername/wine-api
+                docker push yashas080504/wine-api
                 '''
             }
         }
