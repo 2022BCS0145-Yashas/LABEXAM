@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
         IMAGE_NAME = "yashas080504/wine-quality-api"
     }
 
@@ -10,7 +9,7 @@ pipeline {
 
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/2022BCS0145-Yashas/lab4'
+                git 'https://github.com/2022BCS0145-Yashas/LABEXAM'
             }
         }
 
@@ -45,13 +44,19 @@ pipeline {
             }
         }
 
-        stage('Push to DockerHub') {
-            steps {
-                sh """
-                echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-                docker push $IMAGE_NAME
-                """
+    stage('Push to DockerHub') {
+        steps {
+            withCredentials([usernamePassword(
+                credentialsId: 'dockerhub-creds',
+                usernameVariable: 'DOCKER_USER',
+                passwordVariable: 'DOCKER_PASS'
+            )]) {
+                sh '''
+                echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                docker push yourdockerhubusername/wine-api
+                '''
             }
         }
+    }
     }
 }
